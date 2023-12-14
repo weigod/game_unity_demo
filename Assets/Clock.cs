@@ -50,6 +50,18 @@ public class NewBehaviourScript : MonoBehaviour
 
     private void Init()
     {
+        // 接口调用说明：
+        // 1. 若需要与主播端交互通信，如：类似调用OnGetAnchorLiveStatus、TestGetAnchorCanvasMsg，应答则需要监听onAnchorMsg
+        // 2. 若需要与小程序前端交互通用自定义通信，如：类似调用OnSendAppletSomeCustomMsg，应答则需要监听onAppletMsg
+        // 3. 若需要通过Game游戏直接调用小程序前端JS SDK提供的API调用，
+        // 如：类似调用OnGetLiveInfo、OnStartSceneLayoutReqMsg、OnStopSceneLayoutReqMsg、OnPkInviteOnMessageListenMsg、OnPkInviteOffMessageListenMsg
+        // 应答则需要监听onAppletInvokeRspMsg(注册监听应答)、onAppletInvokeListenRspMsg(监听事件内容)
+        // 4. 以上不同的通信可根据业务需要,选其一或选择多个
+        // 5. 以上1/2，见文档：https://github.com/weigod/game_sdk_demo/blob/master/game_interface.md
+        // 6. 以上3，见文档：https://dev.huya.com/docs/miniapp/dev/sdk/
+        // 7. 以上3的为定制便捷方式，方便Game游戏侧可直接调用小程序JS SDK的接口，本质也可以通过以上2发送自定义消息到小程序前端，后小程序前端收到hyExt.exe.onGameMessage事件
+        // 解析该消息后，再通过前端小程序直接调用3的文档的各类接口也可，只是稍微繁琐了些。
+
         mediaControllerSDK = new Huya.USDK.MediaController.MediaPiplelineControllerSDK();
         mediaControllerSDK.onStreamCustomData = OnStreamCustomData;
         mediaControllerSDK.onStreamLog = OnStreamLog;
@@ -165,7 +177,21 @@ public class NewBehaviourScript : MonoBehaviour
         var eventName = "GetAnchorStatus";
         var reqId = eventName + "_" + reqIdIndex.ToString();
         JsonData messageJsonData = new JsonData();
-        messageJsonData["typeName"]  ="Live";
+        messageJsonData["typeName"] = "Live";
+        mediaControllerSDK.SendGeneralMsg(eventName, reqId, messageJsonData);
+        reqIdIndex++;
+    }
+
+    // 模拟发送至小程序前端自定义消息(可以是普通字符串也可以是其他json字符串)
+    public void OnSendAppletSomeCustomMsg()
+    {
+        var eventName = "SendMessageToApplet";
+        var reqId = eventName + "_" + reqIdIndex.ToString();
+        JsonData messageJsonData = new JsonData();
+        JsonData msgCustomJsonData = new JsonData();
+        msgCustomJsonData["name"] = "Divid";
+        msgCustomJsonData["age"] = 18;
+        messageJsonData["msg"]  = msgCustomJsonData.ToJson(); // "some plat string"
         mediaControllerSDK.SendGeneralMsg(eventName, reqId, messageJsonData);
         reqIdIndex++;
     }
@@ -184,6 +210,7 @@ public class NewBehaviourScript : MonoBehaviour
         appletApiParamArray.Add(appletApiParamStr);
 
         mediaControllerSDK.SendAppletInvokeReqMsg(appletApiName, appletApiParamArray, reqId);
+        reqIdIndex++;
     }
 
     // 模拟发送获取主播端画布信息
@@ -211,6 +238,7 @@ public class NewBehaviourScript : MonoBehaviour
         appletApiParamArray.Add(appletApiParamStr);
 
         mediaControllerSDK.SendAppletInvokeReqMsg(appletApiName, appletApiParamArray, reqId);
+        reqIdIndex++;
     }
 
     // 发送小程序调用停止场景布局的请求消息
@@ -220,6 +248,7 @@ public class NewBehaviourScript : MonoBehaviour
         var reqId = appletApiName + "_" + reqIdIndex.ToString();
         List<string> appletApiParamArray = new List<string>();
         mediaControllerSDK.SendAppletInvokeReqMsg(appletApiName, appletApiParamArray, reqId);
+        reqIdIndex++;
     }
 
     // 发送小程序监听类接口的请求消息
@@ -242,6 +271,7 @@ public class NewBehaviourScript : MonoBehaviour
         var listenOnOff = "on";             
         var eventType = "InviteMessage"; // 事件类型，可选
         mediaControllerSDK.SendAppletInvokeListenMsg(appletApiName, appletApiParamArray, reqId, listenOnOff, eventType);
+        reqIdIndex++;
     }
 
     // 发送小程序取消监听类接口的请求消息
@@ -254,6 +284,7 @@ public class NewBehaviourScript : MonoBehaviour
         var listenOnOff = "off";
         var eventType = "InviteMessage"; // 事件类型，可选
         mediaControllerSDK.SendAppletInvokeListenMsg(appletApiName, appletApiParamArray, reqId, listenOnOff, eventType);
+        reqIdIndex++;
     }
 
 
