@@ -105,14 +105,14 @@ namespace Huya.USDK.MediaController
         /// <param name="level"></param>
         public delegate void OnStreamLog(string message, LogLevel level);
 
-        /// 小程序Invoke 与游戏间的消息通道委托
+        /// 小程序Invoke 与游戏间的消息通道委托(也即是调用小程序JS SDK的应答消息)
         /// <param name="apiName"></param>
         /// <param name="rsp"></param>
         /// <param name="reqId"></param>
         /// <param name="err"></param>
         public delegate void OnAppletInvokeRspMsg(string apiName, string rsp, string reqId, string err);
 
-        /// 小程序Invoke Listen 与游戏间的消息通道委托
+        /// 小程序Invoke Listen 与游戏间的消息通道委托(也即是调用小程序JS SDK的监听事件消息)
         /// <param name="apiName"></param>
         /// <param name="message"></param>
         /// <param name="cbId"></param>
