@@ -6,7 +6,7 @@ Unity游戏的接入demo源码
 > 3. 若游戏仅通信，不投射图层，则参照CLock.cs文件中不调用SendViedeo接口即可，主播端会自动采集游戏画面并添加图层
 
 ## 1. 重要文件说明
-* MediaPiplelineControllerSDK.cs：C#包装CPP SDK，包括一些初始化或通信细节处理，开发者可不做调整修改直接引入到unity工程中使用即可
+* MediaPiplelineControllerSDK.cs：C#包装CPP SDK，包括一些初始化或通信细节处理，开发者可不做调整修改直接引入到unity工程中使用即可, 此外注意：CPPSDK(MediaPiplelineControllerSDK.dll相关文件)不需要再打包到游戏包中，因主播端环境已提供
 * Clock.cs：示例用例类，其引入MediaPiplelineControllerSDK.cs文件，并解释了初始化、更新游戏画面、通信调用或回调注册、协议包装、回包解析等，具体可以参照该源码实现
 
 ## 2. 发布部署
