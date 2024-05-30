@@ -13,6 +13,7 @@ Unity游戏的接入demo源码
 * 如本样例所示，本样例的输出为GameDemo.exe，发布时只需要把GameDemo.exe和游戏资源压缩成zip包(不含目录压缩)，然后在小程序开放平台素材上传zip包获取url地址，最后在小程序里配置url地址
 * 构建包可执行文件和依赖库等建议均数字签名，避免被杀毒/防火墙或其他安全软件阻止或误删除文件，导致无法正常启动或运行
 * 构建包可执行文件名应与小程序开放平台时部署的应用程序名一致，以避免无法正常启动游戏
+* 若需要游戏启动参数，可在小程序开放平台时部署配置，除了业务侧的参数，还有其他额外固定的命令行参数；实际启动时的命令行参数形如：GameDemo.exe" --roomid="10009692" --profileid="unkYq1edcPojnerDOCLUZouLPiK8Q7XAVR" --userid="unkYq1edcPojnerDOCLUZouLPiK8Q7XAVR" --foo=bar；其中roomid、profileid、userid为固定命令行参数，foo则为业务侧自定义参数(名称可自定义)
 
 ## 3. 其他参考
 * [开放平台JS SDK文档](https://dev.huya.com/docs/miniapp/dev/sdk/)
